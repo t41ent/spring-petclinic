@@ -8,3 +8,4 @@ node {
     docker.image('maven:3-jdk-8').inside('-v /.m2:/root/.m2') {
         sh 'mvn -B package -DskipTests'
     }
+}
