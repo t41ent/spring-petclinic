@@ -4,7 +4,7 @@ pipeline {
     registryCredential = 'docker-hub'
     dockerImage = ''
   }
-  agent kubernetes
+  agent {kubernetes}
   tools {
     maven 'Maven 3.3.9'
     jdk 'jdk'
