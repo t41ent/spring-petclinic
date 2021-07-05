@@ -1,14 +1,55 @@
-node {
-    
-    stage 'Checkout'
-    git "https://github.com/t41ent/spring-petclinic.git"
-
-    stage 'Build application war file'
-    // Build petclinic in a Maven3+JDK8 Docker container
-    docker.image('maven:3-jdk-8').inside('-v /.m2:/root/.m2') {
-        sh 'mvn -B package -DskipTests'
+pipeline {
+  environment {
+    registry = "t41ent/petclinic"
+    registryCredential = 'docker-hub'
+    dockerImage = ''
+  }
+  agent any
+  tools {
+    maven 'Maven 3.3.9'
+    jdk 'jdk8'
+  } 
+  stages {
+    stage('Cloning Git') {
+      steps {
+        git 'https://github.com/t41ent/spring-petclinic.git'
+      }
     }
-    
-    stage 'Build application Docker image'
-    def appImg = docker.build("local/petclinic")
+    stage('Compile') {
+       steps {
+         sh 'mvn compile' //only compilation of the code
+       }
+    }
+    stage('Test') {
+      steps {
+        sh '''
+        mvn clean install
+        ls
+        pwd
+        ''' 
+        //if the code is compiled, we test and package it in its distributable format; run IT and store in local repository
+      }
+    }
+    stage('Building Image') {
+      steps{
+        script {
+          dockerImage = docker.build registry + ":latest"
+        }
+      }
+    }
+    stage('Deploy Image') {
+      steps{
+         script {
+            docker.withRegistry( '', registryCredential ) {
+            dockerImage.push()
+          }
+        }
+      }
+    }
+    stage('Remove Unused docker image') {
+      steps{
+        sh "docker rmi $registry:latest"
+      }
+    }
+  }
 }
