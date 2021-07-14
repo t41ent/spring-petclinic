@@ -8,6 +8,7 @@ pipeline {
   tools {
     maven 'Maven 3.8.1'
     jdk 'jdk'
+    docker 'docker'
   } 
   stages {
     stage('Cloning Git') {
