@@ -4,7 +4,7 @@ pipeline {
     registryCredential = 'docker-hub'
     dockerImage = ''
   }
-  agent any
+  agent { label 'jenkins-docker' }
   tools {
     maven 'Maven 3.8.1'
     jdk 'jdk'
