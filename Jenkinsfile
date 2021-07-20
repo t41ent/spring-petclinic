@@ -20,7 +20,7 @@ pipeline {
          sh 'mvn compile' //only compilation of the code
        }
     }
-    
+    agent { label 'jenkins-docker' }
     stage('Building Image') {
       steps{
         script {
