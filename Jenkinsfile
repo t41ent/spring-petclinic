@@ -22,13 +22,15 @@ pipeline {
     }
     
     stage('Building Image') {
-      agent { label 'jenkins-docker' }
-      steps{
-        script {
-          dockerImage = docker.build registry + ":latest"
+      container { 'docker'
+        steps{
+          script {
+            dockerImage = docker.build registry + ":latest"
+          }
         }
-      }
+      }   
     }
+      
     stage('Deploy Image') {
       steps{
          script {
