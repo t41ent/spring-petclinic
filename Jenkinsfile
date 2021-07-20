@@ -20,8 +20,9 @@ pipeline {
          sh 'mvn compile' //only compilation of the code
        }
     }
-    agent { label 'jenkins-docker' }
+    
     stage('Building Image') {
+      agent { label 'jenkins-docker' }
       steps{
         script {
           dockerImage = docker.build registry + ":latest"
