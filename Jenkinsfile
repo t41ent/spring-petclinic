@@ -4,12 +4,7 @@ pipeline {
     registryCredential = 'docker-hub'
     dockerImage = ''
   }
-  agent {
-    docker {
-        image 'docker:dind'
-        label 'my-defined-label'
-    }
-}
+  agent any
   tools {
     maven 'Maven 3.8.1'
     jdk 'jdk'
