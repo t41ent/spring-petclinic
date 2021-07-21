@@ -35,14 +35,20 @@ pipeline {
       }   
     }
       stage('Deploy Image') {
-      steps{
-        container ('docker') {
-         script {
-            docker.withRegistry( '', registryCredential ) {
-            dockerImage.push()
+        steps{
+          container ('docker') {
+            script {
+                docker.withRegistry( '', registryCredential ) {
+                    dockerImage.push()
+                }
+            }
           }
         }
       }
+    
+    stage('Kubernetes run'){
+      steps{
+      sh 'kubectl get pods -n jenkins'
       }
     }
   }
