@@ -1,17 +1,5 @@
-FROM maven:3.6.3-jdk-8 AS build-env
-WORKDIR /app
-
-COPY pom.xml ./
-RUN mvn dependency:go-offline
-RUN mvn spring-javaformat:help
-
-COPY . ./
-RUN mvn spring-javaformat:apply
-RUN mvn package -DfinalName=petclinic
-
-FROM openjdk:8-jre-alpine
+FROM openjdk:11.0.1-jre-slim-stretch
 EXPOSE 8080
-WORKDIR /app
-
-COPY --from=build-env /app/target/petclinic.jar ./petclinic.jar
-CMD ["/usr/bin/java", "-jar", "/app/petclinic.jar"]
+ARG JAR=spring-petclinic-2.1.0.BUILD-SNAPSHOT.jar
+COPY target/$JAR /app.jar
+ENTRYPOINT ["java","-jar","/app.jar"]
