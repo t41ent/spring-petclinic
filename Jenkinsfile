@@ -18,9 +18,13 @@ pipeline {
     stage('Compile') {
        steps {
          sh 'mvn compile' //only compilation of the code
-       }
+               }
     }
-    
+    stage('Build app') {
+      steps {
+      sh 'mvn install -DskipTests'
+      }
+    }
     stage('Building Image') {
       steps{
         container ('docker') { 
