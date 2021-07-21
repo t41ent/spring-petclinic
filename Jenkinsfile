@@ -1,7 +1,7 @@
 pipeline {
   environment {
     registry = "t41ent/petclinic"
-    registryCredential = 'docker-hub'
+    registryCredential = 'docker_hub'
     dockerImage = ''
   }
   agent { label 'jenkins-docker' }
