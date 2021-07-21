@@ -30,14 +30,20 @@ pipeline {
         container ('docker') { 
           script {
             dockerImage = docker.build registry + ":latest"
-            docker.withRegistry( '', registryCredential ) {
-            dockerImage.push()
           }
         }
       }   
     }
-      
-    
+      stage('Deploy Image') {
+      steps{
+        container ('docker') {
+         script {
+            docker.withRegistry( '', registryCredential ) {
+            dockerImage.push()
+          }
+        }
+      }
+      }
     }
   }
 }
