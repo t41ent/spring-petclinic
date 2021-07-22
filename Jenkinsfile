@@ -52,6 +52,7 @@ pipeline {
       input 'Deploy to Production?'
                 milestone(1)
                 kubernetesDeploy(
+                    kubeconfigId: 'kubeconfig',
                     configs: 'petclinic.yaml',
                     enableConfigSubstitution: true)
       }
