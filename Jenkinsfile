@@ -3,6 +3,7 @@ pipeline {
     registry = "t41ent/petclinic"
     registryCredential = 'docker_hub'
     dockerImage = ''
+    DOCKER_IMAGE_NAME = "t41ent/petclinic"
   }
   agent { label 'jenkins-docker' }
   tools {
@@ -34,7 +35,7 @@ pipeline {
         }
       }   
     }
-      stage('Deploy Image') {
+      stage('Deploy Image to registry') {
         steps{
           container ('docker') {
             script {
@@ -46,9 +47,14 @@ pipeline {
         }
       }
     
-    stage('Kubernetes run'){
+    stage('Deploy to production'){
       steps{
-      sh 'kubectl get pods -n jenkins'
+      input 'Deploy to Production?'
+                milestone(1)
+                kubernetesDeploy(
+                    kubeconfigId: 'kubeconfig',
+                    configs: 'petclinic.yaml',
+                    enableConfigSubstitution: true
       }
     }
   }
