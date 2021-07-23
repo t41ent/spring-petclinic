@@ -30,7 +30,7 @@ spec:
     spec:
       containers:
       - name: petclinic
-        image: DOCKER_IMAGE_NAME:latest
+        image: t41ent/petclinic:latest
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8080
