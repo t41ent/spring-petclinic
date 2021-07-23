@@ -53,7 +53,7 @@ pipeline {
                 milestone(1)
                 kubernetesDeploy(
                     kubeconfigId: 'kubeconfig',
-                    configs: 'petclinic.yaml',
+                    configs: 'petclinic-*.yaml',
                     enableConfigSubstitution: true)
       }
     }
